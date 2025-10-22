@@ -1,7 +1,6 @@
-// Navbar.js
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaPlusCircle, FaUsers, FaRobot, FaClipboardList } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaPlusCircle, FaUsers, FaRobot, FaClipboardList } from 'react-icons/fa';
 
 function Navbar() {
   return (
@@ -10,6 +9,15 @@ function Navbar() {
         Recruit AI
       </NavLink>
       <div className="nav-sections">
+        <div className="nav-links">
+          <span className="nav-section-title">Espace Candidat</span>
+          <NavLink to="/upload-cv">
+            <FaCloudUploadAlt /> Déposer un CV
+          </NavLink>
+          <NavLink to="/CVChallengeGenerator">
+            <FaCloudUploadAlt /> CVChallengeGenerator
+          </NavLink>
+        </div>
         <div className="nav-links">
           <span className="nav-section-title">Espace Admin</span>
           <NavLink to="/admin/add-job">
@@ -24,14 +32,8 @@ function Navbar() {
           <NavLink to="/admin/screening-classification">
             <FaClipboardList /> Screening Classification
           </NavLink>
-          <NavLink to="/admin/CVQuizGenerator">
+           <NavLink to="/admin/CVQuizGenerator">
             <FaClipboardList /> CVQuizGenerator
-          </NavLink>
-          <NavLink to="/admin/CVMatching">
-            <FaClipboardList /> CVMatching
-          </NavLink>
-            <NavLink to="/admin/candidates-list">
-            <FaClipboardList /> candidates-list
           </NavLink>
         </div>
       </div>
