@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# Documentation Technique - Quiz et Challenges Techniques
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📋 Table des Matières
+- [Aperçu du Projet](#aperçu-du-projet)
+- [Architecture Technique](#architecture-technique)
+- [Modules Principaux](#modules-principaux)
+- [Installation et Déploiement](#installation-et-déploiement)
+- [API Documentation](#api-documentation)
+- [Structure des Données](#structure-des-données)
+- [Configuration](#configuration)
 
-Currently, two official plugins are available:
+## 🚀 Aperçu du Projet
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Objectif
+Plateforme interactive d'évaluation technique générant automatiquement des quiz et défis de programmation personnalisés basés sur l'analyse de CV.
 
-## React Compiler
+### Stack Technique
+- **Frontend**: React.js avec hooks modernes
+- **IA Models**: TinyLlama, Gemini, CodeBERT, DeepSeek-Coder
+- **Traitement Documents**: PDF.js, Mammoth.js
+- **Styling**: CSS3 avec gradients modernes
+- **Export**: PDF, JSON
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🏗️ Architecture Technique
 
-## Expanding the ESLint configuration
+### Diagramme d'Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+┌─────────────────┐ ┌──────────────────┐ ┌─────────────────┐
+│ Frontend │ │ API Gateway │ │ AI Services │
+│ React.js │◄──►│ Node.js │◄──►│ TinyLlama │
+│ │ │ │ │ Gemini │
+└─────────────────┘ └──────────────────┘ └─────────────────┘
+│
+▼
+┌─────────────────┐ ┌──────────────────┐
+│ File Processing│ │ Data Storage │
+│ PDF.js │ │ JSON/State │
+│ Mammoth.js │ │ │
+└─────────────────┘ └──────────────────┘
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📊 Modules Principaux
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 1. Quiz Basé sur le CV
+#### Modèle IA: TinyLlama/TinyLlama-1.1B-Chat-v1.0
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Fonctionnalités:**
+- Génération de quiz personnalisé basé sur l'analyse complète du CV
+- Configuration flexible: choix du nombre de questions (5-20) et difficulté
+- Quatre niveaux de difficulté: Facile, Moyen, Difficile, Mixte
+- Types de questions variés: QCM, Questions ouvertes, Techniques, Situations
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Prompt Engineering:**
+javascript
+const quizPrompt = `
+Tu es un expert en recrutement et évaluation des compétences. 
+Analyse le CV et génère un quiz personnalisé avec:
+- Questions techniques sur les compétences mentionnées
+- Questions sur les expériences et réalisations  
+- Questions de mise en situation basées sur le profil
+- Questions sur les outils et technologies utilisés
+- Questions comportementales liées aux responsabilités
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Format JSON strict avec:
+- Langue détectée
+- Profil résumé (2-3 phrases)
+- Compétences principales [liste]
+- Questions [id, question, type, options, réponse_correcte, 
+  explication, difficulté, catégorie]
+`;
